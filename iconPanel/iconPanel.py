@@ -7,6 +7,8 @@
 #    return iconPanel.addToPane()
 #paneMenu.addCommand( 'Universal Icons', addIconPanel )
 #nukescripts.registerPanel('com.ohufx.iconPanel', addIconPanel)
+import os
+import nuke
 import nukescripts
 
 class IconPanel( nukescripts.PythonPanel ):
