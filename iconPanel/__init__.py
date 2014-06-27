@@ -5,7 +5,7 @@ Icon Panel
 ==========
 
 A debug panel for Nuke that displays and provides location for every icon
-in Nuke's icon folder.
+in Nuke's icon folder and every internal icon.
 
 ## Usage
 
