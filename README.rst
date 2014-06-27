@@ -15,13 +15,17 @@ in Nuke's icon folder.
 Usage
 -----
 
-This dockable panel can be instantiated from the Layout menu, by default it's
-placed under the Pane submenu. Once you create the panel, you'll see the an
-entry for every icon found.
+This dockable panel can be instantiated from the panes menu, under the submenu
+'Panes' where you find the 'Nodes' panel. Once you create the panel, you'll
+see the an entry for every icon found.
+
+Entries are split into *External icons* and *Internal icons*. External icons
+can be found on disk in the `plugins/icons` folder, and mostly contain toolbar
+icons. Internal icons are built into Nuke, and aren't found on disk at all.
 
 Entries look like:
 ::
-    icon_name ICON icon/path/icon.png
+    icon_name ICON <knob text>
 
 You can then use this path for assigning external_icons to menus, panels, etc.
 
