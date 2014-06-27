@@ -174,7 +174,7 @@ def _find_files(directory, pattern):
 
     """
     files = [item for item in os.listdir(directory) if fnmatch(item, pattern)]
-    files.sort()
+    files.sort(key=lambda v: v.lower())
 
     return files
 
