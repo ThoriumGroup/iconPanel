@@ -241,7 +241,10 @@ class IconPanel(nukescripts.PythonPanel):
                 icon=icon
             )
         else:
-            icon_string = '{name} @{icon}'
+            icon_string = '{name} @{icon}'.format(
+                name=name,
+                icon=icon
+            )
 
         icon_knob = nuke.String_Knob(icon, icon_string)
         icon_knob.setValue(icon_string)
@@ -250,18 +253,25 @@ class IconPanel(nukescripts.PythonPanel):
 
     # =========================================================================
 
-    def build_icon_list(self, icon_list, html_style=True):
+    def build_icon_list(self, icon_list, html_style=True, alpha_title=False):
         """Builds the panel list of icons"""
+        # Start our tab group
+        self.addKnob(nuke.BeginTabGroup_Knob())
+
+        # Add all of our child icon knobs and tabs
         for i, icon in enumerate(icon_list):
             # Every time we hit the batch limit, we'll be creating a new tab
             counter = i % self.batch
             if counter == 0:
-                tab = nuke.Tab_Knob(str(i), str(i))
+                tab_name = icon[:2].title() if alpha_title else str(i)
+                tab = nuke.Tab_Knob(tab_name, tab_name)
                 self.addKnob(tab)
 
             icon_knob = self.build_icon_knob(icon, html_style)
             self.addKnob(icon_knob)
 
+        # End our tab group
+        self.addKnob(nuke.EndTabGroup_Knob())
 
     # =========================================================================
 
@@ -269,7 +279,7 @@ class IconPanel(nukescripts.PythonPanel):
     def find_file_icons():
         """Finds all the external_icons in the Nuke icon folder"""
         nuke_dir = os.path.split(nuke.EXE_PATH)[0]
-        icon_path = os.path.join(nuke_dir, 'plugins/external_icons')
+        icon_path = os.path.join(nuke_dir, 'plugins/icons')
         icons = _find_files(icon_path, '*.png')
 
         return icons
