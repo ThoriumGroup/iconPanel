@@ -196,10 +196,32 @@ class IconPanel(nukescripts.PythonPanel):
         self.internal_icons = INTERNAL_ICONS
         self.batch = 30
 
+        # We'll have two tabs up on top, one for External icons and one for
+        # internal Icons
+        # Inside each tab will be a bunch of subtabs, each containing about 30
+        # icons.
+        #
+        # We accomplish this nested tabbing by starting and ending tab groups.
+        # The top level tab group contains the External and Internal tabs,
+        # then within each tab we'll start and end another tab group.
+        self.addKnob(nuke.BeginTabGroup_Knob())
+
         # Build our external icons
-        self.build_icon_list(self.external_icons, False)
+        self.addKnob(nuke.Tab_Knob('external_icons', 'External Icons'))
+        self.build_icon_list(
+            self.external_icons,
+            html_style=False,
+            alpha_title=True
+        )
+
         # Build our internal icons
-        self.build_icon_list(self.internal_icons, True)
+        self.addKnob(nuke.Tab_Knob('internal_icons', 'Internal Icons'))
+        self.build_icon_list(
+            self.internal_icons,
+            html_style=True
+        )
+
+        self.addKnob(nuke.EndTabGroup_Knob())
 
     # =========================================================================
 
