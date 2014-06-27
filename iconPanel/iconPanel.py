@@ -45,9 +45,8 @@ SOFTWARE.
 # =============================================================================
 
 # Standard Imports
-import fnmatch
+from fnmatch import fnmatch
 import os
-import re
 
 # Nuke Imports
 try:
@@ -69,40 +68,30 @@ __all__ = [
 # =============================================================================
 
 
-def _find_files(directory, patterns):
-    """Walks a directory recursively finding all files matching unix pattern.
+def _find_files(directory, pattern):
+    """Searches a directory finding all files and dirs matching unix pattern.
 
     Args:
         directory : (str)
             The directory to search in.
 
-        patterns : [str]
-            A list of unix style patterns to search for. These should be the
-            same patterns that fnmatch or glob would take, and not regex.
+        patterns : (str)
+            A unix style pattern to search for. This should be the same style
+             of pattern that fnmatch or glob would take, and not regex.
 
     Returns:
         [str]
-            A list of filenames matching one of the patterns is returned. The
+            A list of file and directory names matching one of the patterns is returned. The
             filenames are relative to the directory we were given.
 
     Raises:
         N/A
 
     """
-    matches = []
-    pat = re.compile('|'.join(fnmatch.translate(grep) for grep in patterns))
-    for root, dirs, files in os.walk(directory):
-        for basename in files:
-            if pat.match(basename):
-                filename = os.path.relpath(
-                    os.path.join(root, basename),
-                    directory
-                )
-                matches.append(filename)
+    files = [item for item in os.listdir(directory) if fnmatch(item, pattern)]
+    files.sort()
 
-    matches.sort()
-
-    return matches
+    return files
 
 # =============================================================================
 # CLASSES
