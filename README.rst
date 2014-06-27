@@ -10,7 +10,7 @@ Icon Panel
 - **Nuke Versions:** 6.3 and up
 
 A debug panel for Nuke that displays and provides location for every icon
-in Nuke's icon folder.
+in Nuke's icon folder and every built in icon.
 
 Usage
 -----
