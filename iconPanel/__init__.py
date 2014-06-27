@@ -88,7 +88,7 @@ __version__ = "1.2b1"
 __maintainer__ = "Sean Wallitsch"
 __maintainer_email__ = "sean@grenadehop.com"
 __module_name__ = "iconPanel"
-__short_desc__ = "A panel for Nuke that displays and provides path for every icon"
+__short_desc__ = "A panel for Nuke that displays details for every icon."
 __status__ = "Development"
 __url__ = "http://github.com/ThoriumGroup/iconPanel"
 
@@ -102,17 +102,49 @@ __all__ = [
 ]
 
 # =============================================================================
+# PRIVATE FUNCTIONS
+# =============================================================================
+
+
+def _get_menu_item_index(menu, item):
+    """Determines what should be the index of item if menu was alphabetical
+
+    Args:
+        menu : (<nuke.Menu>)
+            The Nuke menu that we want to determine the place our item in.
+
+        item : (str)
+            The name of the menu item we want to determine the alphabteical
+            index if placed within menu.
+
+    Returns:
+        (int)
+            The index of `item` if placed within a sorted list of the items
+            that already exist in `menu`.
+
+    Raises:
+        N/A
+
+    """
+    menu_items = [entry.name() for entry in menu.items()]
+    menu_items.append(item)
+    menu_items.sort()
+    return menu_items.index(item)
+
+# =============================================================================
 # PUBLIC FUNCTIONS
 # =============================================================================
 
 
 def run():
     """Adds the iconPanel panel to the Layout Menu"""
-    def add_icon_panel():
-        global iconPanel
-        iconPanel = iconPanel.IconPanel()
-        return iconPanel.addToPane()
-
     pane_menu = nuke.menu('Pane')
-    pane_menu.addCommand('Universal Icons', add_icon_panel)
-    nukescripts.registerPanel('com.thorium.iconPanel', add_icon_panel)
+    pane_menu.addCommand(
+        'Universal Icons',
+        'iconPanel.IconPanel().addToPane()',
+        index=_get_menu_item_index(pane_menu, 'Universal Icons'),
+    )
+    nukescripts.registerPanel(
+        'com.thorium.iconPanel',
+        'iconPanel.IconPanel().addToPane()'
+    )
