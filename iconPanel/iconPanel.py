@@ -103,12 +103,11 @@ class IconPanel(nukescripts.PythonPanel):
 
     def __init__(self):
         super(IconPanel, self).__init__(
-            self,
-            'Icon Debug Panel',
+            'Universal Icons',
             'com.thorium.IconPanel'
         )
 
-        self.icons = self.find_icons()
+        self.file_icons = self.find_file_icons()
         self.batch = 30
 
         self.build_icon_list()
@@ -116,12 +115,19 @@ class IconPanel(nukescripts.PythonPanel):
     # =========================================================================
 
     @staticmethod
-    def build_icon_knob(icon):
+    def build_icon_knob(icon, html_style=True, html_root=None):
         """Builds an individual icon knob
 
         Args:
             icon : (str)
-                The icon filename relative to the icons directory.
+                The icon filename relative to the file_icons directory.
+
+            html_style=True : (bool)
+                To use html <img src=""> code to link to the image, or use
+                @ to find a relative image in Nuke's search path.
+
+            html_root=None : (str)
+                When using html style, the root to prepend to the icon.
 
         Returns:
             (<nuke.String_Knob>)
@@ -132,9 +138,22 @@ class IconPanel(nukescripts.PythonPanel):
 
         """
         name = os.path.splitext(icon.split('/')[-1])[0]
-        icon_string = '{name} <img src=":qrc/images/{icon}">'.format(
-            name=name, icon=icon
-        )
+
+        # HTML style vs @ style:
+        # HTML style is used to bring in images that are not in Nuke's search
+        # path, by explicitly linking to them (bad) or bring in images from
+        # Nuke's built in images. We'll default to bringing in Nuke's built
+        # in images, with :qrc/images/
+        if html_style:
+            html_root = html_root if html_root else ':qrc/images/'
+            icon_string = '{name} <img src="{html_root}{icon}">'.format(
+                name=name,
+                html_root=html_root,
+                icon=icon
+            )
+        else:
+            icon_string = '{name} @{icon}'
+
         icon_knob = nuke.String_Knob(icon, icon_string)
         icon_knob.setValue(icon_string)
 
@@ -144,9 +163,9 @@ class IconPanel(nukescripts.PythonPanel):
 
     def build_icon_list(self):
         """Builds the panel list of icons"""
-        for i, icon in enumerate(self.icons):
+        for i, icon in enumerate(self.file_icons):
             # Every time we hit the batch limit, we'll be creating a new tab
-            counter = i % self.batch
+            counter = self.batch
             if counter == 0:
                 tab = nuke.Tab_Knob(str(i), str(i))
                 self.addKnob(tab)
@@ -157,10 +176,10 @@ class IconPanel(nukescripts.PythonPanel):
     # =========================================================================
 
     @staticmethod
-    def find_icons():
-        """Finds all the icons in the Nuke icon folder"""
+    def find_file_icons():
+        """Finds all the file_icons in the Nuke icon folder"""
         nuke_dir = os.path.split(nuke.EXE_PATH)[0]
-        icon_path = os.path.join(nuke_dir, 'plugins/icons')
-        icons = _find_files(icon_path, ['*.png', '*.svg'])
+        icon_path = os.path.join(nuke_dir, 'plugins/file_icons')
+        icons = _find_files(icon_path, '*.png')
 
         return icons
