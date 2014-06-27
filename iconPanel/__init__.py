@@ -17,7 +17,7 @@ Entries look like:
 ::
     icon_name ICON icon/path/icon.png
 
-You can then use this path for assigning file_icons to menus, panels, etc.
+You can then use this path for assigning external_icons to menus, panels, etc.
 
 ## Installation
 
