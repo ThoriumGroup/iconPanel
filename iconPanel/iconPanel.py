@@ -4,8 +4,7 @@
 Icon Panel
 ==========
 
-A debug panel for Nuke that displays and provides location for every icon
-in Nuke's icon folder.
+Contains the python panel object for IconPanel.
 
 ## Classes
 

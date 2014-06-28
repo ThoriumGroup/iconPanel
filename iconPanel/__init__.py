@@ -36,7 +36,7 @@ Then, add the following lines to your 'menu.py' file:
 ## Public Functions
 
     run()
-        Adds the iconPanel panel to the Layout Menu
+        Adds the iconPanel panel to the Panes Menu
 
 ## License
 
